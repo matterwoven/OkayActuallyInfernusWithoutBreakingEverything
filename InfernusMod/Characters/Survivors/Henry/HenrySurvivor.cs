@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace HenryMod.Survivors.Henry
 {
-    public class HenrySurvivor : SurvivorBase<HenrySurvivor>
+    public class InfernusSurvivor : SurvivorBase<HenrySurvivor>
     {
         //used to load the assetbundle for this character. must be unique
         public override string assetBundleName => "myassetbundle"; //if you do not change this, you are giving permission to deprecate the mod
