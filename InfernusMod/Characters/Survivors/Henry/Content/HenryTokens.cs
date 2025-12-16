@@ -20,19 +20,19 @@ namespace InfernusMod.Survivors.Infernus
         {
             string prefix = InfernusSurvivor.Infernus_PREFIX;
 
-            string desc = "Infernus is a skilled fighter who makes use of a wide arsenal of weaponry to take down his foes.<color=#CCD3E0>" + Environment.NewLine + Environment.NewLine
-             + "< ! > Sword is a good all-rounder while Boxing Gloves are better for laying a beatdown on more powerful foes." + Environment.NewLine + Environment.NewLine
-             + "< ! > Pistol is a powerful anti air, with its low cooldown and high damage." + Environment.NewLine + Environment.NewLine
-             + "< ! > Roll has a lingering armor buff that helps to use it aggressively." + Environment.NewLine + Environment.NewLine
-             + "< ! > Bomb can be used to wipe crowds with ease." + Environment.NewLine + Environment.NewLine;
+            string desc = "Infernus is a bartender who utilizes his Ixian flames to light up his enemies.<color=#CCD3E0>" + Environment.NewLine + Environment.NewLine
+             + "< ! > Afterburn deals lingering flame damage, its timer is reset by Infernus' other abilities." + Environment.NewLine + Environment.NewLine
+             + "< ! > Napalm sweeps through crowds, those affected suffer vulnerability to all damage" + Environment.NewLine + Environment.NewLine
+             + "< ! > Flame Dash is a swift engagement and disengage tool that leaves behind a fiery trail." + Environment.NewLine + Environment.NewLine
+             + "< ! > Concussive Combustion uses one spark to wipe out crowds and bosses alike." + Environment.NewLine + Environment.NewLine;
 
-            string outro = "..and so he left, searching for a new identity.";
-            string outroFailure = "..and so he vanished, forever a blank slate.";
+            string outro = "..and so he left, to enjoy his life anew.";
+            string outroFailure = "..and so he couldn't be bailed out, forever a sputtered flame.";
 
             Language.Add(prefix + "NAME", "Infernus");
             Language.Add(prefix + "DESCRIPTION", desc);
-            Language.Add(prefix + "SUBTITLE", "The Chosen One");
-            Language.Add(prefix + "LORE", "sample lore");
+            Language.Add(prefix + "SUBTITLE", "The Jezebel's Bartender");
+            Language.Add(prefix + "LORE", "Infernus is an Ixian with a powerful control of flame that he uses to enhance his speed and ignite his enemies. Combining his Flame Dash with the ability to spew a Napalm catalyst, Infernus can chase down and ignite his foes with a deadly Afterburn. Any targets left standing will be subject to his explosive Concussive Combustion, knocking them out and leaving them vulnerable to further immolation.\r\n\r\nAs a creature from Ixia, Infernus had a troubled and intense youth while he was raised in the United States. Despite a rash of deadly crime as a teenager, he found himself tending a bar in his adulthood and learning to calm his intense emotions. With quality music and interesting people to talk to, Infernus rarely has a need these days to call up his dangerous supernatural abilities.");
             Language.Add(prefix + "OUTRO_FLAVOR", outro);
             Language.Add(prefix + "OUTRO_FAILURE", outroFailure);
 
@@ -41,28 +41,28 @@ namespace InfernusMod.Survivors.Infernus
             #endregion
 
             #region Passive
-            Language.Add(prefix + "PASSIVE_NAME", "Infernus passive");
-            Language.Add(prefix + "PASSIVE_DESCRIPTION", "Sample text.");
+            Language.Add(prefix + "PASSIVE_NAME", "Afterburn");
+            Language.Add(prefix + "PASSIVE_DESCRIPTION", Tokens.agilePrefix + $"Bullets build up afterburn, it deals <style=cIsDamage>{100f * InfernusStaticValues.swordDamageCoefficient}</style> damage over time.");
             #endregion
 
             #region Primary
-            Language.Add(prefix + "PRIMARY_SLASH_NAME", "Sword");
-            Language.Add(prefix + "PRIMARY_SLASH_DESCRIPTION", Tokens.agilePrefix + $"Swing forward for <style=cIsDamage>{100f * InfernusStaticValues.swordDamageCoefficient}% damage</style>.");
+            Language.Add(prefix + "PRIMARY_SLASH_NAME", "Incendiary Remarks");
+            Language.Add(prefix + "PRIMARY_SLASH_DESCRIPTION", Tokens.agilePrefix + $"Deal <style=cIsDamage>{100f * InfernusStaticValues.gunDamageCoefficient}%</style> damage.");
             #endregion
 
             #region Secondary
-            Language.Add(prefix + "SECONDARY_GUN_NAME", "Handgun");
-            Language.Add(prefix + "SECONDARY_GUN_DESCRIPTION", Tokens.agilePrefix + $"Fire a handgun for <style=cIsDamage>{100f * InfernusStaticValues.gunDamageCoefficient}% damage</style>.");
+            Language.Add(prefix + "SECONDARY_GUN_NAME", "Napalm");
+            Language.Add(prefix + "SECONDARY_GUN_DESCRIPTION", Tokens.agilePrefix + $"Fire a homemade cocktail for <style=cIsDamage>{100f * InfernusStaticValues.gunDamageCoefficient}%</style> damage.");
             #endregion
 
             #region Utility
-            Language.Add(prefix + "UTILITY_ROLL_NAME", "Roll");
-            Language.Add(prefix + "UTILITY_ROLL_DESCRIPTION", "Roll a short distance, gaining <style=cIsUtility>300 armor</style>. <style=cIsUtility>You cannot be hit during the roll.</style>");
+            Language.Add(prefix + "UTILITY_ROLL_NAME", "Flame Dash");
+            Language.Add(prefix + "UTILITY_ROLL_DESCRIPTION", Tokens.agilePrefix + $"Dash forward, gaining <style=cIsUtility>20 movement speed</style>. You leave a trail of fire that burns enemies for <style=cIsDamage>{100f * InfernusStaticValues.swordDamageCoefficient}%</style> damage.");
             #endregion
 
             #region Special
-            Language.Add(prefix + "SPECIAL_BOMB_NAME", "Bomb");
-            Language.Add(prefix + "SPECIAL_BOMB_DESCRIPTION", $"Throw a bomb for <style=cIsDamage>{100f * InfernusStaticValues.bombDamageCoefficient}% damage</style>.");
+            Language.Add(prefix + "SPECIAL_BOMB_NAME", "Concussive Combustion");
+            Language.Add(prefix + "SPECIAL_BOMB_DESCRIPTION", $"Become a living bomb, unleashing <style=cIsDamage>{100f * InfernusStaticValues.bombDamageCoefficient}%</style> damage in a radius.");
             #endregion
 
             #region Achievements
