@@ -14,7 +14,7 @@ namespace InfernusMod.Survivors.Infernus
     public class InfernusSurvivor : SurvivorBase<InfernusSurvivor>
     {
         //used to load the assetbundle for this character. must be unique
-        public override string assetBundleName => "myassetbundle"; //if you do not change this, you are giving permission to deprecate the mod
+        public override string assetBundleName => "InfernusMod"; //if you do not change this, you are giving permission to deprecate the mod
 
         //the name of the prefab we will create. conventionally ending in "Body". must be unique
         public override string bodyName => "InfernusBody"; //if you do not change this, you get the point by now
@@ -23,8 +23,8 @@ namespace InfernusMod.Survivors.Infernus
         public override string masterName => "InfernusMonsterMaster"; //if you do not
 
         //the names of the prefabs you set up in unity that we will use to build your character
-        public override string modelPrefabName => "infernus";
-        public override string displayPrefabName => "infernusLobby";
+        public override string modelPrefabName => "mdlInfernus";
+        public override string displayPrefabName => "InfernusDisplay";
 
         public const string INFERNUS_PREFIX = InfernusPlugin.DEVELOPER_PREFIX + "_INFERNUS_";
 
@@ -57,10 +57,6 @@ namespace InfernusMod.Survivors.Infernus
                 {
                     childName = "BodyModel",
                     material = assetBundle.LoadMaterial("matInfernus"),
-                },
-                new CustomRendererInfo
-                {
-                    childName = "GunModel",
                 },
                 new CustomRendererInfo
                 {
