@@ -56,11 +56,26 @@ namespace InfernusMod.Survivors.Infernus
                 new CustomRendererInfo
                 {
                     childName = "BodyModel",
-                    material = assetBundle.LoadMaterial("matInfernus"),
+                    material = assetBundle.LoadMaterial("inferno_armglow"),
                 },
                 new CustomRendererInfo
                 {
-                    childName = "Model",
+                    childName = "BodyModel",
+                    material = assetBundle.LoadMaterial("inferno_body"),
+                },
+                new CustomRendererInfo
+                {
+                    childName = "BodyModel",
+                    material = assetBundle.LoadMaterial("inferno_clothes"),
+                },
+                new CustomRendererInfo
+                {
+                    childName = "BodyModel",
+                    material = assetBundle.LoadMaterial("Inferno_headglow"),
+                },
+                new CustomRendererInfo
+                {
+                    childName = "BodyModel",
                 }
         };
 

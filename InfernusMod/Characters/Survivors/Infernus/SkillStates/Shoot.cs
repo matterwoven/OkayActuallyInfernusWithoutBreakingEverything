@@ -9,11 +9,11 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
     {
         public static float damageCoefficient = InfernusStaticValues.gunDamageCoefficient;
         public static float procCoefficient = 0.6f;
-        public static float baseDuration = 0.6f;
+        public static float baseDuration = 0.3f;
         //delay on firing is usually ass-feeling. only set this if you know what you're doing
         public static float firePercentTime = 0.0f;
-        public static float force = 800f;
-        public static float recoil = 3f;
+        public static float force = 200f;
+        public static float recoil = 0.5f;
         public static float range = 256f;
         public static GameObject tracerEffectPrefab = LegacyResourcesAPI.Load<GameObject>("Prefabs/Effects/Tracers/TracerGoldGat");
 
