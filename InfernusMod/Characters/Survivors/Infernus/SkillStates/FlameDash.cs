@@ -9,8 +9,8 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
     public class FlameDash : BaseSkillState
     {
         public static float duration = 3f;
-        public static float initialSpeedCoefficient = 2f;
-        public static float finalSpeedCoefficient = 5f;
+        public static float initialSpeedCoefficient = 1f;
+        public static float finalSpeedCoefficient = 4f;
 
         public static string dodgeSoundString = "HenryRoll";
         public static float dodgeFOV = global::EntityStates.Commando.DodgeState.dodgeFOV;
@@ -25,35 +25,42 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
             base.OnEnter();
             animator = GetModelAnimator();
 
-            if (isAuthority && inputBank && characterDirection)
+            bool isRunning = false;
+
+            if (isRunning == false)
             {
-                forwardDirection = (inputBank.moveVector == Vector3.zero ? characterDirection.forward : inputBank.moveVector).normalized;
-            }
+                isRunning = true;
 
-            Vector3 rhs = characterDirection ? characterDirection.forward : forwardDirection;
-            Vector3 rhs2 = Vector3.Cross(Vector3.up, rhs);
+                if (isAuthority && inputBank && characterDirection)
+                {
+                    forwardDirection = (inputBank.moveVector == Vector3.zero ? characterDirection.forward : inputBank.moveVector).normalized;
+                }
 
-            float num = Vector3.Dot(forwardDirection, rhs);
-            float num2 = Vector3.Dot(forwardDirection, rhs2);
+                Vector3 rhs = characterDirection ? characterDirection.forward : forwardDirection;
+                Vector3 rhs2 = Vector3.Cross(Vector3.up, rhs);
 
-            RecalculateRollSpeed();
+                float num = Vector3.Dot(forwardDirection, rhs);
+                float num2 = Vector3.Dot(forwardDirection, rhs2);
 
-            if (characterMotor && characterDirection)
-            {
-                characterMotor.velocity.y = 0f;
-                characterMotor.velocity = forwardDirection * rollSpeed;
-            }
+                RecalculateRollSpeed();
 
-            Vector3 b = characterMotor ? characterMotor.velocity : Vector3.zero;
-            previousPosition = transform.position - b;
+                if (characterMotor && characterDirection)
+                {
+                    characterMotor.velocity.y = 0f;
+                    characterMotor.velocity = forwardDirection * rollSpeed;
+                }
 
-            PlayAnimation("FullBody, Override", "Roll", "Roll.playbackRate", duration);
-            Util.PlaySound(dodgeSoundString, gameObject);
+                Vector3 b = characterMotor ? characterMotor.velocity : Vector3.zero;
+                previousPosition = transform.position - b;
 
-            if (NetworkServer.active)
-            {
-                characterBody.AddTimedBuff(InfernusBuffs.armorBuff, 3f * duration);
-                characterBody.AddTimedBuff(RoR2Content.Buffs.HiddenInvincibility, 0.5f * duration);
+                PlayAnimation("FullBody, Override", "Roll", "Roll.playbackRate", duration);
+                Util.PlaySound(dodgeSoundString, gameObject);
+
+                if (NetworkServer.active)
+                {
+                    characterBody.AddTimedBuff(InfernusBuffs.speedBuff, 3f * duration);
+                    characterBody.AddTimedBuff(RoR2Content.Buffs.HiddenInvincibility, 0.5f * duration);
+                }
             }
         }
 

@@ -248,8 +248,8 @@ namespace InfernusMod.Survivors.Infernus
                 activationStateMachineName = "Weapon2",
                 interruptPriority = EntityStates.InterruptPriority.Skill,
 
-                baseRechargeInterval = 1f,
-                baseMaxStock = 1,
+                baseRechargeInterval = 2f,
+                baseMaxStock = 2,
 
                 rechargeStock = 1,
                 requiredStock = 1,
@@ -431,9 +431,9 @@ namespace InfernusMod.Survivors.Infernus
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args)
         {
 
-            if (sender.HasBuff(InfernusBuffs.armorBuff))
+            if (sender.HasBuff(InfernusBuffs.speedBuff))
             {
-                args.armorAdd += 300;
+                args.moveSpeedMultAdd += 0.20f;
             }
         }
     }

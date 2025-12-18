@@ -6,12 +6,12 @@ namespace InfernusMod.Survivors.Infernus
     public static class InfernusBuffs
     {
         // armor buff gained during roll
-        public static BuffDef armorBuff;
+        public static BuffDef speedBuff;
 
         public static void Init(AssetBundle assetBundle)
         {
-            armorBuff = Modules.Content.CreateAndAddBuff("InfernusArmorBuff",
-                LegacyResourcesAPI.Load<BuffDef>("BuffDefs/HiddenInvincibility").iconSprite,
+            speedBuff = Modules.Content.CreateAndAddBuff("InfernusSpeedBuff",
+                LegacyResourcesAPI.Load<BuffDef>("BuffDefs/WhipBoost").iconSprite,
                 Color.white,
                 false,
                 false);
