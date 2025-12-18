@@ -9,10 +9,10 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
     public class FlameDash : BaseSkillState
     {
         public static float duration = 3f;
-        public static float initialSpeedCoefficient = 5f;
-        public static float finalSpeedCoefficient = 2.5f;
+        public static float initialSpeedCoefficient = 2f;
+        public static float finalSpeedCoefficient = 5f;
 
-        public static string dodgeSoundString = "InfernusRoll";
+        public static string dodgeSoundString = "HenryRoll";
         public static float dodgeFOV = global::EntityStates.Commando.DodgeState.dodgeFOV;
 
         private float rollSpeed;
@@ -67,6 +67,11 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
             base.FixedUpdate();
             RecalculateRollSpeed();
 
+            if (isAuthority && inputBank && characterDirection)
+            {
+                forwardDirection = (inputBank.moveVector == Vector3.zero ? characterDirection.forward : inputBank.moveVector).normalized;
+            }
+
             if (characterDirection) characterDirection.forward = forwardDirection;
             if (cameraTargetParams) cameraTargetParams.fovOverride = Mathf.Lerp(dodgeFOV, 60f, fixedAge / duration);
 
@@ -78,7 +83,8 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
                 vector = forwardDirection * d;
                 vector.y = 0f;
 
-                characterMotor.velocity = vector;
+                characterMotor.velocity.x = vector.x;
+                characterMotor.velocity.z = vector.z;
             }
             previousPosition = transform.position;
 
