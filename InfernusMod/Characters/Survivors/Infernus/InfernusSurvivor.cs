@@ -228,6 +228,7 @@ namespace InfernusMod.Survivors.Infernus
             primarySkillDef1.stepCount = 2;
             primarySkillDef1.stepGraceDuration = 0.5f;
 
+
             Skills.AddPrimarySkills(bodyPrefab, primarySkillDef1);
         }
 
@@ -263,7 +264,7 @@ namespace InfernusMod.Survivors.Infernus
 
                 isCombatSkill = true,
                 canceledFromSprinting = false,
-                cancelSprintingOnActivation = false,
+                cancelSprintingOnActivation = true,
                 forceSprintDuringState = false,
 
             });
