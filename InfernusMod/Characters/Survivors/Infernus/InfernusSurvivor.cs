@@ -86,6 +86,13 @@ namespace InfernusMod.Survivors.Infernus
             //    return;
 
             base.Initialize();
+
+            //Dunno why this isn't in the base henry thing, use it!
+            CharacterBody characterBody = bodyPrefab.GetComponent<CharacterBody>();
+            if (characterBody)
+            {
+                characterBody.vehicleIdleStateMachine = Array.Empty<EntityStateMachine>();
+            }
         }
 
         public override void InitializeCharacter()

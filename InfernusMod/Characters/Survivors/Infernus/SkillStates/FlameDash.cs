@@ -20,10 +20,17 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
         private Animator animator;
         private Vector3 previousPosition;
 
+        //Dash values
+        private float spawnInterval = 5f; //How far dash blazes are placed
+        private float distanceTraveled = 0f; //Changing over time, how far character has traveled since last blaze placement
+        private float nextSpawnDistance = 0f; //Temporary Dash value, rolls forward in parallel to distanceTraveled
+
+
         public override void OnEnter()
         {
             base.OnEnter();
             animator = GetModelAnimator();
+
 
             bool isRunning = false;
 
@@ -64,6 +71,11 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
             }
         }
 
+        private void SpawnFlameZone()
+        {
+
+        }
+
         private void RecalculateRollSpeed()
         {
             rollSpeed = moveSpeedStat * Mathf.Lerp(initialSpeedCoefficient, finalSpeedCoefficient, fixedAge / duration);
@@ -73,6 +85,16 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
         {
             base.FixedUpdate();
             RecalculateRollSpeed();
+
+            float frameDistance = Vector3.Distance(transform.position, previousPosition);
+            distanceTraveled += frameDistance;
+
+            if (NetworkServer.active && distanceTraveled >= nextSpawnDistance)
+            {
+                SpawnFlameZone();
+                nextSpawnDistance += spawnInterval;
+            }
+
 
             if (isAuthority && inputBank && characterDirection)
             {

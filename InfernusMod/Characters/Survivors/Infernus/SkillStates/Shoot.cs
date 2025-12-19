@@ -2,6 +2,9 @@
 using InfernusMod.Survivors.Infernus;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
+using R2API;
+using static UnityEngine.SendMouseEvents;
 
 namespace InfernusMod.Survivors.Infernus.SkillStates
 {
@@ -98,10 +101,26 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
                         spreadYawScale = 1f,
                         queryTriggerInteraction = QueryTriggerInteraction.UseGlobal,
                         hitEffectPrefab = EntityStates.Commando.CommandoWeapon.FirePistol2.hitEffectPrefab,
+
+                        //Apply afterburn stack on hit
+                        hitCallback = ApplyAfterburnOnHit()
                     }.Fire();
                 }
             }
         }
+
+        private BulletAttack.HitCallback ApplyAfterburnOnHit()
+        {
+            HurtBox hurtBox = hitInfo.hitHurtBox;
+            DotController.InflictDot(
+                healthComponent.gameObject,
+                this.gameObject,
+                DotController.DotIndex.Burn,
+                4f, // duration in seconds
+                1f  // damage multiplier
+            );
+        }
+
 
         public override InterruptPriority GetMinimumInterruptPriority()
         {
