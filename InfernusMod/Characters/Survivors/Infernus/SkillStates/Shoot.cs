@@ -76,7 +76,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
                         origin = aimRay.origin,
                         damage = damageCoefficient * damageStat,
                         damageColorIndex = DamageColorIndex.Default,
-                        damageType = DamageTypeCombo.GenericSecondary,
+                        damageType = DamageTypeCombo.GenericPrimary,
                         falloffModel = BulletAttack.FalloffModel.None,
                         maxDistance = range,
                         force = force,

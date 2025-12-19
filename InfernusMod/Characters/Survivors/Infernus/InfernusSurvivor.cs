@@ -245,7 +245,7 @@ namespace InfernusMod.Survivors.Infernus
                 keywordTokens = new string[] { "KEYWORD_AGILE" },
                 skillIcon = assetBundle.LoadAsset<Sprite>("texNapalmColored"),
 
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.SlashCombo)),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Napalm)),
                 activationStateMachineName = "Weapon2",
                 interruptPriority = EntityStates.InterruptPriority.Skill,
                 //Base recharge 25 seconds in deadlock
