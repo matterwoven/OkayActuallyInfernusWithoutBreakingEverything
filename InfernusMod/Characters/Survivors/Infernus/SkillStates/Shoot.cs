@@ -12,7 +12,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
     {
         public static float damageCoefficient = InfernusStaticValues.gunDamageCoefficient;
         public static float procCoefficient = 0.6f;
-        public static float baseDuration = 0.3f;
+        public static float baseDuration = 0.4f;
         //delay on firing is usually ass-feeling. only set this if you know what you're doing
         public static float firePercentTime = 0.0f;
         public static float force = 200f;
@@ -111,14 +111,40 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
 
         private BulletAttack.HitCallback ApplyAfterburnOnHit()
         {
-            HurtBox hurtBox = hitInfo.hitHurtBox;
-            DotController.InflictDot(
-                healthComponent.gameObject,
-                this.gameObject,
-                DotController.DotIndex.Burn,
-                4f, // duration in seconds
-                1f  // damage multiplier
-            );
+            return (BulletAttack bulletAttack, ref BulletAttack.BulletHit hitInfo) =>
+            {
+                HurtBox hurtBox = hitInfo.hitHurtBox;
+                if (!hurtBox)
+                    return false;
+
+                HealthComponent healthComponent = hurtBox.healthComponent;
+                if (!healthComponent)
+                    return false;
+
+
+                CharacterBody body = hurtBox.healthComponent?.body;
+                if (!body) return false;
+
+                //Adds stack of buff
+                //get current stack count and change duration to 4f * (stackcount * 0.01)
+                float afterburnDuration = 6f;
+                //float afterburnDamageMult = 1f;
+                float currentStacks = body.GetBuffCount(InfernusDebuffs.afterburnBuildup);
+
+                if (currentStacks >= 100 || body.GetBuffCount(InfernusDebuffs.afterburnDebuff) == 1)
+                {
+                    //Both buildup and afterburn can't be there at the same time
+                    body.RemoveBuff(InfernusDebuffs.afterburnBuildup);
+                    body.AddTimedBuff(InfernusDebuffs.afterburnDebuff, afterburnDuration);
+                }
+                else
+                {
+                    body.AddTimedBuff(InfernusBuffs.speedBuff, afterburnDuration);
+                }
+
+
+                return true;
+            };
         }
 
 

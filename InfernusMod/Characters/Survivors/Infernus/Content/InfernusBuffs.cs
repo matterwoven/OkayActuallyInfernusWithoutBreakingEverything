@@ -25,6 +25,7 @@ namespace InfernusMod.Survivors.Infernus
     public static class InfernusDebuffs
     {
         public static BuffDef afterburnDebuff;
+        public static BuffDef afterburnBuildup;
 
         public static void Init(AssetBundle assetBundle)
         {
@@ -33,16 +34,26 @@ namespace InfernusMod.Survivors.Infernus
                 "InfernusAfterburn",
                 LegacyResourcesAPI.Load<BuffDef>("BuffDefs/OnFire").iconSprite,
                 Color.red,
-                true,
-                false
+                false,
+                true
             );
+
+            afterburnBuildup = Modules.Content.CreateAndAddBuff(
+                "InfernusBuildup",
+                assetBundle.LoadAsset<Sprite>("texBazookaFireIcon"),
+                Color.black,
+                true,
+                true
+            );
+
+            float afterburnDamageMult = 1f;
 
             DotController.DotDef afterburnDot = new DotController.DotDef
             {
                 associatedBuff = afterburnDebuff,
-                damageCoefficient = 0f,
+                damageCoefficient = afterburnDamageMult,
                 interval = 0.5f,
-                damageColorIndex = DamageColorIndex.Bleed,
+                damageColorIndex = DamageColorIndex.Void,
                 resetTimerOnAdd = true
             };
 
