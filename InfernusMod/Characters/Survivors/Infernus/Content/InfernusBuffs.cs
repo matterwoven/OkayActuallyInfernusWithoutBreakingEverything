@@ -27,7 +27,8 @@ namespace InfernusMod.Survivors.Infernus
         public static BuffDef afterburnDebuff;
         public static BuffDef afterburnBuildup;
 
-        public static DotController.DotIndex afterburnDebuffIndex = DotAPI.RegisterDotDef(0.25f, 0.25f, DamageColorIndex.Bleed, afterburnDebuff);
+        public static DotController.DotIndex afterburnDebuffIndex;
+        public static DotController.DotIndex afterburnBuildupIndex;
 
         public static void Init(AssetBundle assetBundle)
         {
@@ -48,19 +49,36 @@ namespace InfernusMod.Survivors.Infernus
                 true
             );
 
-            float afterburnDamageMult = 1f;
 
             DotController.DotDef afterburnDot = new DotController.DotDef
             {
                 associatedBuff = afterburnDebuff,
-                damageCoefficient = afterburnDamageMult,
+                damageCoefficient = InfernusStaticValues.afterburnDamageCoefficient,
                 interval = 0.5f,
                 damageColorIndex = DamageColorIndex.Void,
+                resetTimerOnAdd = true
+                
+
+            };
+
+            DotController.DotDef emptyDmg = new DotController.DotDef
+            {
+                associatedBuff = afterburnBuildup,
+                damageCoefficient = 0f,
+                interval = 0.1f,
+                damageColorIndex = DamageColorIndex.Default,
                 resetTimerOnAdd = true
             };
 
             //Way to add afterburn using these definitions
-            DotController.DotIndex afterburnDebuffIndex = DotAPI.RegisterDotDef(0.25f, 0.25f, DamageColorIndex.Bleed, afterburnDebuff);
+            afterburnDebuffIndex = DotAPI.RegisterDotDef(afterburnDot);
+            afterburnBuildupIndex = DotAPI.RegisterDotDef(emptyDmg);
+
+            DotController.DotStack afterburnBuildupDot = new DotController.DotStack
+            {
+                dotIndex = afterburnBuildupIndex,
+                totalDuration = 8f
+            };
 
         }
     }

@@ -102,7 +102,8 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
             }
 
             if (characterDirection) characterDirection.forward = forwardDirection;
-            if (cameraTargetParams) cameraTargetParams.fovOverride = Mathf.Lerp(dodgeFOV, 60f, fixedAge / duration);
+            // CHANGEPARSE <- Keyword for undoing changes
+            //if (cameraTargetParams) cameraTargetParams.fovOverride = Mathf.Lerp(dodgeFOV, 60f, fixedAge / duration);
 
             Vector3 normalized = (transform.position - previousPosition).normalized;
             if (characterMotor && characterDirection && normalized != Vector3.zero)
@@ -126,7 +127,8 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
 
         public override void OnExit()
         {
-            if (cameraTargetParams) cameraTargetParams.fovOverride = -1f;
+            // CHANGEPARSE <- Keyword for undoing changes
+            //if (cameraTargetParams) cameraTargetParams.fovOverride = -1f;
             base.OnExit();
 
             characterMotor.disableAirControlUntilCollision = false;

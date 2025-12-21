@@ -12,7 +12,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
     {
         public static float damageCoefficient = InfernusStaticValues.gunDamageCoefficient;
         public static float procCoefficient = 0.6f;
-        public static float baseDuration = 0.4f;
+        public static float baseDuration = 0.2f;
         //delay on firing is usually ass-feeling. only set this if you know what you're doing
         public static float firePercentTime = 0.0f;
         public static float force = 200f;
@@ -103,8 +103,9 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
                         hitEffectPrefab = EntityStates.Commando.CommandoWeapon.FirePistol2.hitEffectPrefab,
 
                         //Apply afterburn stack on hit
-                        //hitCallback = ApplyAfterburnOnHit()
+                        hitCallback = ApplyAfterburnOnHit()
                     }.Fire();
+                    
                 }
             }
         }
@@ -113,29 +114,92 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
         {
             return (BulletAttack bulletAttack, ref BulletAttack.BulletHit hitInfo) =>
             {
-                HurtBox hurtBox = hitInfo.hitHurtBox;
-                if (!hurtBox)
-                    return true;
+                bool returnValue = BulletAttack.DefaultHitCallbackImplementation(bulletAttack, ref hitInfo);
+                bool isCrit = bulletAttack.isCrit;
 
-                HealthComponent healthComponent = hurtBox.healthComponent;
-                if (!healthComponent)
-                    return true;
+                //Victim data
+                HealthComponent victimHealthComponent = hitInfo.hitHurtBox.healthComponent;
+                CharacterBody victimCharacterBody = victimHealthComponent.body;
+                GameObject victimGameObject = victimHealthComponent.gameObject;
+                HurtBox victimHurtBox = hitInfo.hitHurtBox;
+
+                //Victim dotController
+                DotController dotController = DotController.FindDotController(victimGameObject);
+
+                applyBuildup();
+
+                int buildupCount = buildupCountStacks(dotController);
 
 
-                CharacterBody body = hurtBox.healthComponent.body;
-                if (!body)
-                    return true;
+                if (buildupCount >= 5)
+                {
+                    clearBuildup(dotController, victimCharacterBody);
+                    applyAfterburn();
+                }
 
-                DotController.InflictDot(
-                    healthComponent.gameObject,
-                    gameObject,
-                    hurtBox,
-                    InfernusDebuffs.afterburnDebuffIndex,
-                    4f, // duration in seconds
-                    1f  // damage multiplier
-                );
+                void applyBuildup()
+                {
+                    //for (int i = 0; i < appliedStacks; i++)
+                    //{
+                        DotController.InflictDot(
+                            victimGameObject,
+                            gameObject,
+                            victimHurtBox,
+                            InfernusDebuffs.afterburnBuildupIndex,
+                            10f,
+                            1f
+                        );
+                    //}
+                }
 
-                return true;
+                void applyAfterburn()
+                {
+                    // Apply real afterburn
+                    DotController.InflictDot(
+                        victimGameObject,
+                        gameObject, //Attacker (us) gameobject
+                        victimHurtBox,
+                        InfernusDebuffs.afterburnDebuffIndex,
+                        10f,
+                        1f
+                    );
+                }
+
+
+                int buildupCountStacks(DotController controllerForTarget)
+                {
+                    int buildupsCounted = 0;
+                    var dotStacks = controllerForTarget.dotStackList;
+
+                    // 2️⃣ Count buildup stacks
+                    for (int i = 0; i < dotStacks.Count; i++)
+                    {
+                        if (dotStacks[i].dotIndex == InfernusDebuffs.afterburnBuildupIndex)
+                        {
+                            buildupsCounted++;
+                        }
+                    }
+
+                    return buildupsCounted;
+                }
+
+                void clearBuildup(DotController controller, CharacterBody body)
+                {
+                    // Remove buildup dot stacks manually
+                    for (int i = controller.dotStackList.Count - 1; i >= 0; i--)
+                    {
+                        if (controller.dotStackList[i].dotIndex == InfernusDebuffs.afterburnBuildupIndex)
+                        {
+                            controller.dotStackList.RemoveAt(i);
+                        }
+                    }
+
+                    // Clear associated buff visuals
+                    body.ClearTimedBuffs(InfernusDebuffs.afterburnBuildup);
+                }
+
+
+                return returnValue;
             };
         }
             

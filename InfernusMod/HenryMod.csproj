@@ -24,6 +24,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="BepInEx.Core" Version="5.*" />
+		<PackageReference Include="ICSharpCode.Decompiler" Version="9.1.0.7988" />
 		<PackageReference Include="Krafs.Publicizer" Version="2.3.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

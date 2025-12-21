@@ -258,7 +258,7 @@ namespace InfernusMod.Survivors.Infernus
                 activationStateMachineName = "Weapon2",
                 interruptPriority = EntityStates.InterruptPriority.Skill,
                 //Base recharge 25 seconds in deadlock
-                baseRechargeInterval = 25f,
+                baseRechargeInterval = 6f,
                 baseMaxStock = 1,
 
                 rechargeStock = 1,
@@ -298,7 +298,7 @@ namespace InfernusMod.Survivors.Infernus
                 interruptPriority = EntityStates.InterruptPriority.PrioritySkill,
 
                 //Base recharge 35 seconds in deadlock
-                baseRechargeInterval = 35f,
+                baseRechargeInterval = 8f,
                 baseMaxStock = 1,
 
                 rechargeStock = 1,
@@ -337,7 +337,7 @@ namespace InfernusMod.Survivors.Infernus
                 activationStateMachineName = "Weapon2", interruptPriority = EntityStates.InterruptPriority.Skill,
 
                 //Base recharge 140 seconds in deadlock
-                baseRechargeInterval = 140f,
+                baseRechargeInterval = 10f,
                 baseMaxStock = 1,
 
                 isCombatSkill = true,
