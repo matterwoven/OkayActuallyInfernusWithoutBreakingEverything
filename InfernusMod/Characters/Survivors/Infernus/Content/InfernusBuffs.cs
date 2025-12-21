@@ -43,7 +43,7 @@ namespace InfernusMod.Survivors.Infernus
 
             afterburnBuildup = Modules.Content.CreateAndAddBuff(
                 "InfernusBuildup",
-                assetBundle.LoadAsset<Sprite>("texBazookaFireIcon"),
+                assetBundle.LoadAsset<Sprite>("texNapalmColored"),
                 Color.black,
                 true,
                 true
