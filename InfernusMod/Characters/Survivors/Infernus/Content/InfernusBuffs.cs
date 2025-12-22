@@ -26,9 +26,14 @@ namespace InfernusMod.Survivors.Infernus
     {
         public static BuffDef afterburnDebuff;
         public static BuffDef afterburnBuildup;
+        public static BuffDef flameDashDebuff;
 
+        public static DotController.DotDef afterburnBuildupDotDef;
+        public static DotController.DotDef afterburnDotDef;
+        public static DotController.DotDef flameDashDotDef;
         public static DotController.DotIndex afterburnDebuffIndex;
         public static DotController.DotIndex afterburnBuildupIndex;
+        public static DotController.DotIndex flameDashDebuffIndex;
 
         public static void Init(AssetBundle assetBundle)
         {
@@ -36,7 +41,7 @@ namespace InfernusMod.Survivors.Infernus
             afterburnDebuff = Modules.Content.CreateAndAddBuff(
                 "InfernusAfterburn",
                 LegacyResourcesAPI.Load<BuffDef>("BuffDefs/OnFire").iconSprite,
-                Color.red,
+                Color.magenta,
                 false,
                 true
             );
@@ -44,8 +49,16 @@ namespace InfernusMod.Survivors.Infernus
             afterburnBuildup = Modules.Content.CreateAndAddBuff(
                 "InfernusBuildup",
                 assetBundle.LoadAsset<Sprite>("texNapalmColored"),
-                Color.black,
+                Color.yellow,
                 true,
+                true
+            );
+
+            flameDashDebuff = Modules.Content.CreateAndAddBuff(
+                "InfernusBuildup",
+                assetBundle.LoadAsset<Sprite>("texFlameDashColored"),
+                Color.red,
+                false,
                 true
             );
 
@@ -57,8 +70,6 @@ namespace InfernusMod.Survivors.Infernus
                 interval = 0.5f,
                 damageColorIndex = DamageColorIndex.Void,
                 resetTimerOnAdd = true
-                
-
             };
 
             DotController.DotDef emptyDmg = new DotController.DotDef
@@ -67,12 +78,26 @@ namespace InfernusMod.Survivors.Infernus
                 damageCoefficient = 0f,
                 interval = 0.1f,
                 damageColorIndex = DamageColorIndex.Default,
-                resetTimerOnAdd = true
+                resetTimerOnAdd = true,
+            };
+
+            DotController.DotDef flameDashDot = new DotController.DotDef
+            {
+                associatedBuff = afterburnBuildup,
+                damageCoefficient = 0f,
+                interval = 0.1f,
+                damageColorIndex = DamageColorIndex.Default,
+                resetTimerOnAdd = true,
             };
 
             //Way to add afterburn using these definitions
             afterburnDebuffIndex = DotAPI.RegisterDotDef(afterburnDot);
             afterburnBuildupIndex = DotAPI.RegisterDotDef(emptyDmg);
+            flameDashDebuffIndex = DotAPI.RegisterDotDef(flameDashDot);
+
+            afterburnBuildupDotDef = emptyDmg;
+            afterburnDotDef = afterburnDot;
+            flameDashDotDef = flameDashDot;
 
             DotController.DotStack afterburnBuildupDot = new DotController.DotStack
             {

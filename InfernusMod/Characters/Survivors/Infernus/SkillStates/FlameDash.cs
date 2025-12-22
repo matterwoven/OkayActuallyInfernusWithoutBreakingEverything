@@ -1,4 +1,5 @@
 ﻿using EntityStates;
+using InfernusMod.Characters.Survivors.Infernus.Content;
 using InfernusMod.Survivors.Infernus;
 using RoR2;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
         public static float duration = 3f;
         public static float initialSpeedCoefficient = 1f;
         public static float finalSpeedCoefficient = 4f;
+        public static GameObject flameZonePrefab;
 
         public static string dodgeSoundString = "HenryRoll";
         public static float dodgeFOV = global::EntityStates.Commando.DodgeState.dodgeFOV;
@@ -73,8 +75,31 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
 
         private void SpawnFlameZone()
         {
+            if (!NetworkServer.active) return;
 
+            RaycastHit hit;
+            Vector3 spawnPos = transform.position;
+
+            if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, 20f, LayerIndex.world.mask))
+            {
+                spawnPos = hit.point;
+            }
+
+            GameObject zone = GameObject.Instantiate(
+                InfernusAssets.flameZonePrefab,
+                spawnPos,
+                Quaternion.identity
+            );
+
+            FlameZoneController controller = zone.GetComponent<FlameZoneController>();
+            if (controller)
+            {
+                controller.owner = gameObject;
+            }
+
+            NetworkServer.Spawn(zone);
         }
+
 
         private void RecalculateRollSpeed()
         {
@@ -89,7 +114,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
             float frameDistance = Vector3.Distance(transform.position, previousPosition);
             distanceTraveled += frameDistance;
 
-            if (NetworkServer.active && distanceTraveled >= nextSpawnDistance)
+            if (distanceTraveled >= nextSpawnDistance)
             {
                 SpawnFlameZone();
                 nextSpawnDistance += spawnInterval;

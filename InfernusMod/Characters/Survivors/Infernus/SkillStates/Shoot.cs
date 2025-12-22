@@ -12,7 +12,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
     {
         public static float damageCoefficient = InfernusStaticValues.gunDamageCoefficient;
         public static float procCoefficient = 0.6f;
-        public static float baseDuration = 0.2f;
+        public static float baseDuration = 0.4f;
         //delay on firing is usually ass-feeling. only set this if you know what you're doing
         public static float firePercentTime = 0.0f;
         public static float force = 200f;
@@ -24,6 +24,11 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
         private float fireTime;
         private bool hasFired;
         private string muzzleString;
+
+        //Afterburn defs
+        private const int MaxBuildupStacks = 10;
+        private const float BuildupDuration = 10f;
+        private const float AfterburnDuration = 10f;
 
         public override void OnEnter()
         {
@@ -125,13 +130,30 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
 
                 //Victim dotController
                 DotController dotController = DotController.FindDotController(victimGameObject);
+                int currentBuildupStacks = GetBuildupStackCount(dotController);
+
+                if (currentBuildupStacks >= MaxBuildupStacks)
+                {
+                    ConvertBuildupToAfterburn(victimGameObject, victimHurtBox, isCrit, dotController, victimCharacterBody);
+                    return returnValue;
+                }
 
                 applyBuildup();
+                if (isCrit)
+                {
+                    applyBuildup();
+                }
 
-                int buildupCount = buildupCountStacks(dotController);
+                currentBuildupStacks = GetBuildupStackCount(dotController);
+
+                if (currentBuildupStacks >= MaxBuildupStacks)
+                {
+                    ConvertBuildupToAfterburn(victimGameObject, victimHurtBox, isCrit, dotController, victimCharacterBody);
+                }
+                int buildupCount = GetBuildupStackCount(dotController);
 
 
-                if (buildupCount >= 5)
+                if (buildupCount >= 10)
                 {
                     clearBuildup(dotController, victimCharacterBody);
                     applyAfterburn();
@@ -139,48 +161,59 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
 
                 void applyBuildup()
                 {
-                    //for (int i = 0; i < appliedStacks; i++)
-                    //{
-                        DotController.InflictDot(
-                            victimGameObject,
-                            gameObject,
-                            victimHurtBox,
-                            InfernusDebuffs.afterburnBuildupIndex,
-                            10f,
-                            1f
-                        );
-                    //}
+                    DotController.InflictDot(
+                    victimGameObject,
+                    gameObject,
+                    victimHurtBox,
+                    InfernusDebuffs.afterburnBuildupIndex,
+                    10f,
+                    0f
+                    );
                 }
 
                 void applyAfterburn()
                 {
                     // Apply real afterburn
-                    DotController.InflictDot(
-                        victimGameObject,
-                        gameObject, //Attacker (us) gameobject
-                        victimHurtBox,
-                        InfernusDebuffs.afterburnDebuffIndex,
-                        10f,
-                        1f
-                    );
+                    if (isCrit != false) { 
+                        DotController.InflictDot(
+                            victimGameObject,
+                            gameObject, //Attacker (us) gameobject
+                            victimHurtBox,
+                            InfernusDebuffs.afterburnDebuffIndex,
+                            10f,
+                            0f
+                        );
+                    }
+                    else
+                    {
+                        DotController.InflictDot(
+                            victimGameObject,
+                            gameObject, //Attacker (us) gameobject
+                            victimHurtBox,
+                            InfernusDebuffs.afterburnDebuffIndex,
+                            10f,
+                            1f
+                        );
+                    }
                 }
 
 
-                int buildupCountStacks(DotController controllerForTarget)
+                int GetBuildupStackCount(DotController controller)
                 {
-                    int buildupsCounted = 0;
-                    var dotStacks = controllerForTarget.dotStackList;
+                    if (controller == null) return 0;
 
-                    // 2️⃣ Count buildup stacks
-                    for (int i = 0; i < dotStacks.Count; i++)
+                    int count = 0;
+                    var stacks = controller.dotStackList;
+
+                    for (int i = 0; i < stacks.Count; i++)
                     {
-                        if (dotStacks[i].dotIndex == InfernusDebuffs.afterburnBuildupIndex)
+                        if (stacks[i].dotIndex == InfernusDebuffs.afterburnBuildupIndex)
                         {
-                            buildupsCounted++;
+                            count++;
                         }
                     }
 
-                    return buildupsCounted;
+                    return count;
                 }
 
                 void clearBuildup(DotController controller, CharacterBody body)
@@ -196,6 +229,22 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
 
                     // Clear associated buff visuals
                     body.ClearTimedBuffs(InfernusDebuffs.afterburnBuildup);
+                }
+
+                void ConvertBuildupToAfterburn(GameObject victim, HurtBox hurtBox, bool isCritting, DotController controller, CharacterBody body)
+                {
+                    clearBuildup(controller, body);
+
+                    float damageMultiplier = isCritting ? 0.5f : 1f;
+
+                    DotController.InflictDot(
+                        victim,
+                        gameObject,
+                        hurtBox,
+                        InfernusDebuffs.afterburnDebuffIndex,
+                        AfterburnDuration,
+                        damageMultiplier
+                    );
                 }
 
 

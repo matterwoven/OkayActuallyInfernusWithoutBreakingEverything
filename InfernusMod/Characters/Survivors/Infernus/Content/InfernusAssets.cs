@@ -3,6 +3,11 @@ using UnityEngine;
 using InfernusMod.Modules;
 using System;
 using RoR2.Projectile;
+using UnityEngine.Networking;
+using InfernusMod.Characters.Survivors.Infernus.Content;
+using UnityEngine.Android;
+using R2API;
+using static Rewired.UI.ControlMapper.ControlMapper;
 
 namespace InfernusMod.Survivors.Infernus
 {
@@ -19,6 +24,7 @@ namespace InfernusMod.Survivors.Infernus
 
         //projectiles
         public static GameObject bombProjectilePrefab;
+        public static GameObject flameZonePrefab;
 
         private static AssetBundle _assetBundle;
 
@@ -32,6 +38,7 @@ namespace InfernusMod.Survivors.Infernus
             CreateEffects();
 
             CreateProjectiles();
+            CreateSurfaces();
         }
 
         #region effects
@@ -66,12 +73,36 @@ namespace InfernusMod.Survivors.Infernus
         }
         #endregion effects
 
+        #region surface
+        private static void CreateSurfaces()
+        {
+            CreateFlameZoneSurface();
+            //Content.AddProjectilePrefab(flameZonePrefab);
+        }
+
+        private static void CreateFlameZoneSurface()
+        {
+            //from https://xiaoxiao921.github.io/GithubActionCacheTest/assetPathsDump.html
+            //RoR2 / Base / Common / FireTrail.prefab   UnityEngine.GameObject
+            //RoR2 / Base / Common / FireTrailSegment.prefab    UnityEngine.GameObject
+            flameZonePrefab = _assetBundle.LoadAsset<GameObject>("DashSpawnAnchor");
+
+            flameZonePrefab.AddComponent<NetworkIdentity>();
+
+            if (!flameZonePrefab.GetComponent<FlameZoneController>())
+                flameZonePrefab.AddComponent<FlameZoneController>();
+
+            ContentAddition.AddNetworkedObject(flameZonePrefab);
+        }
+        #endregion surface
+
         #region projectiles
         private static void CreateProjectiles()
         {
             CreateBombProjectile();
             Content.AddProjectilePrefab(bombProjectilePrefab);
         }
+
 
         private static void CreateBombProjectile()
         {
