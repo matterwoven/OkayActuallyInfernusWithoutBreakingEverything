@@ -42,17 +42,24 @@ namespace InfernusMod.Characters.Survivors.Infernus.Content
                 }
             }
         }
+        
+        HashSet<CharacterBody> damagedThisTick = new HashSet<CharacterBody>();
 
         private void FixedUpdate()
         {
             if (!NetworkServer.active) return;
 
-
             tickStopwatch += Time.fixedDeltaTime;
+
             if (tickStopwatch >= tickInterval)
             {
                 tickStopwatch -= tickInterval;
+
+                // Damage scaled by tick interval
                 float damageThisTick = damagePerSecond * tickInterval;
+
+                // Track which CharacterBodies were already hit this tick
+                HashSet<CharacterBody> damagedThisTickSet = new HashSet<CharacterBody>();
 
                 int count = Physics.OverlapSphereNonAlloc(
                     transform.position,
@@ -69,56 +76,50 @@ namespace InfernusMod.Characters.Survivors.Infernus.Content
                     HurtBox hurtBox = col.GetComponent<HurtBox>();
                     if (!hurtBox || !hurtBox.healthComponent) continue;
 
-                    if (owner == hurtBox.healthComponent) return;
+                    CharacterBody victimBody = hurtBox.healthComponent.body;
+                    if (!victimBody || (ownerBody && victimBody == ownerBody)) continue;
+                    if (victimBody.teamComponent && victimBody.teamComponent.teamIndex == ownerTeam) continue;
 
-                    HealthComponent hc = hurtBox.healthComponent;
-                    if (!hc.body) continue;
-
-                    //Doesn't hurt self
-                    CharacterBody victimBody = hc.body;
-                    if (ownerBody && victimBody == ownerBody)
-                        continue;
-
-                    //Doesn't hurt allies
-                    if (victimBody.teamComponent &&
-                        victimBody.teamComponent.teamIndex == ownerTeam)
-                        continue;
+                    // Hit each target only once per tick
+                    if (damagedThisTickSet.Contains(victimBody)) continue;
+                    damagedThisTickSet.Add(victimBody);
 
                     DamageInfo damageInfo = new DamageInfo
                     {
                         attacker = owner,
                         inflictor = gameObject,
-                        damage = damageThisTick,
+                        damage = damageThisTick * ownerBody.damage,
                         damageColorIndex = DamageColorIndex.Default,
                         damageType = DamageType.Generic,
                         crit = ownerBody && ownerBody.RollCrit(),
                         position = hurtBox.transform.position,
                         force = Vector3.zero,
-                        procCoefficient = 0.5f
+                        procCoefficient = 1f
                     };
 
-                    hc.TakeDamage(damageInfo);
+                    hurtBox.healthComponent.TakeDamage(damageInfo);
                 }
             }
+        
 
 
-            //foreach (HurtBox hurtBox in victims)
-            //{
-                //if (!hurtBox) continue;
+        //foreach (HurtBox hurtBox in victims)
+        //{
+        //if (!hurtBox) continue;
 
-                //HealthComponent hc = hurtBox.healthComponent;
-                //if (!hc || !hc.body) continue;
+        //HealthComponent hc = hurtBox.healthComponent;
+        //if (!hc || !hc.body) continue;
 
-                //DotController.InflictDot(
-                    //hc.gameObject,                     // victim
-                    //owner,                             // attacker
-                    //hurtBox,                           // hurtbox of victim
-                    //InfernusDebuffs.afterburnDebuffIndex,
-                    //1f,                                // refresh duration
-                    //1f                                 // stack
-                //);
-            //}
-        }
+        //DotController.InflictDot(
+        //hc.gameObject,                     // victim
+        //owner,                             // attacker
+        //hurtBox,                           // hurtbox of victim
+        //InfernusDebuffs.afterburnDebuffIndex,
+        //1f,                                // refresh duration
+        //1f                                 // stack
+        //);
+        //}
+    }
 
         private void OnTriggerEnter(Collider other)
         {
