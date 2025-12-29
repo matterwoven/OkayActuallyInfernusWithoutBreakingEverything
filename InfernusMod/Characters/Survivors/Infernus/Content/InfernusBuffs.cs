@@ -1,6 +1,7 @@
 ﻿using RoR2;
 using UnityEngine;
 using R2API;
+using ICSharpCode.Decompiler.Util;
 
 namespace InfernusMod.Survivors.Infernus
 {
@@ -56,14 +57,14 @@ namespace InfernusMod.Survivors.Infernus
                 "NapalmDebuff",
                 assetBundle.LoadAsset<Sprite>("texNapalmColored"),
                 Color.yellow,
-                true,
+                false,
                 true
             );
 
             DotController.DotDef afterburnDot = new DotController.DotDef
             {
                 associatedBuff = afterburnDebuff,
-                damageCoefficient = InfernusStaticValues.afterburnDamageCoefficient,
+                damageCoefficient = InfernusStaticValues.afterburnDamageCoefficient * 0.5f,
                 interval = 0.5f,
                 damageColorIndex = DamageColorIndex.Void,
                 resetTimerOnAdd = true

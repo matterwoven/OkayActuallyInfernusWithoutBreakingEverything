@@ -49,55 +49,58 @@ namespace InfernusMod.Characters.Survivors.Infernus.Content
 
 
             tickStopwatch += Time.fixedDeltaTime;
-            if (tickStopwatch < tickInterval) return;
-
-            tickStopwatch = 0f;
-
-            int count = Physics.OverlapSphereNonAlloc(
-                transform.position,
-                radius,
-                overlapResults,
-                LayerIndex.entityPrecise.mask
-            );
-
-            for (int i = 0; i < count; i++)
+            if (tickStopwatch >= tickInterval)
             {
-                Collider col = overlapResults[i];
-                if (!col) continue;
+                tickStopwatch -= tickInterval;
+                float damageThisTick = damagePerSecond * tickInterval;
 
-                HurtBox hurtBox = col.GetComponent<HurtBox>();
-                if (!hurtBox || !hurtBox.healthComponent) continue;
+                int count = Physics.OverlapSphereNonAlloc(
+                    transform.position,
+                    radius,
+                    overlapResults,
+                    LayerIndex.entityPrecise.mask
+                );
 
-                if (owner == hurtBox.healthComponent) return;
-
-                HealthComponent hc = hurtBox.healthComponent;
-                if (!hc.body) continue;
-
-                //Doesn't hurt self
-                CharacterBody victimBody = hc.body;
-                if (ownerBody && victimBody == ownerBody)
-                    continue;
-
-                //Doesn't hurt allies
-                if (victimBody.teamComponent &&
-                    victimBody.teamComponent.teamIndex == ownerTeam)
-                    continue;
-
-                DamageInfo damageInfo = new DamageInfo
+                for (int i = 0; i < count; i++)
                 {
-                    attacker = owner,
-                    inflictor = gameObject,
-                    damage = damagePerSecond,
-                    damageColorIndex = DamageColorIndex.Default,
-                    damageType = DamageType.Generic,
-                    crit = ownerBody && ownerBody.RollCrit(),
-                    position = hurtBox.transform.position,
-                    force = Vector3.zero,
-                    procCoefficient = InfernusStaticValues.dashDamageCoefficient
-                };
+                    Collider col = overlapResults[i];
+                    if (!col) continue;
 
-                hc.TakeDamage(damageInfo);
+                    HurtBox hurtBox = col.GetComponent<HurtBox>();
+                    if (!hurtBox || !hurtBox.healthComponent) continue;
+
+                    if (owner == hurtBox.healthComponent) return;
+
+                    HealthComponent hc = hurtBox.healthComponent;
+                    if (!hc.body) continue;
+
+                    //Doesn't hurt self
+                    CharacterBody victimBody = hc.body;
+                    if (ownerBody && victimBody == ownerBody)
+                        continue;
+
+                    //Doesn't hurt allies
+                    if (victimBody.teamComponent &&
+                        victimBody.teamComponent.teamIndex == ownerTeam)
+                        continue;
+
+                    DamageInfo damageInfo = new DamageInfo
+                    {
+                        attacker = owner,
+                        inflictor = gameObject,
+                        damage = damageThisTick,
+                        damageColorIndex = DamageColorIndex.Default,
+                        damageType = DamageType.Generic,
+                        crit = ownerBody && ownerBody.RollCrit(),
+                        position = hurtBox.transform.position,
+                        force = Vector3.zero,
+                        procCoefficient = 0.5f
+                    };
+
+                    hc.TakeDamage(damageInfo);
+                }
             }
+
 
             //foreach (HurtBox hurtBox in victims)
             //{

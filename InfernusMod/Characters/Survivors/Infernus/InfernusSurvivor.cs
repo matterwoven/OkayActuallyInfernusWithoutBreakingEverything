@@ -447,8 +447,8 @@ namespace InfernusMod.Survivors.Infernus
 
             if (body && body.HasBuff(InfernusDebuffs.napalmDebuff))
             {
-                // Increase incoming damage by 30%
-                damageInfo.damage *= 1f + 20.0f;
+                // Increase incoming damage by 50%
+                damageInfo.damage *= 1f + 0.5f;
             }
 
             orig(self, damageInfo);

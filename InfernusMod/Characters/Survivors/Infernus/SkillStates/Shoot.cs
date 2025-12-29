@@ -12,7 +12,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
     {
         public static float damageCoefficient = InfernusStaticValues.gunDamageCoefficient;
         public static float procCoefficient = 0.6f;
-        public static float baseDuration = 0.4f;
+        public static float baseDuration = 0.3f;
         //delay on firing is usually ass-feeling. only set this if you know what you're doing
         public static float firePercentTime = 0.0f;
         public static float force = 200f;
@@ -27,7 +27,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
 
         //Afterburn defs
         private const int MaxBuildupStacks = 10;
-        private const float BuildupDuration = 10f;
+        private const float BuildupDuration = 5f;
         private const float AfterburnDuration = 10f;
 
         public override void OnEnter()
@@ -166,7 +166,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
                     gameObject,
                     victimHurtBox,
                     InfernusDebuffs.afterburnBuildupIndex,
-                    10f,
+                    BuildupDuration,
                     0f
                     );
                 }
@@ -180,7 +180,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
                             gameObject, //Attacker (us) gameobject
                             victimHurtBox,
                             InfernusDebuffs.afterburnDebuffIndex,
-                            10f,
+                            AfterburnDuration,
                             0f
                         );
                     }
@@ -191,7 +191,7 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
                             gameObject, //Attacker (us) gameobject
                             victimHurtBox,
                             InfernusDebuffs.afterburnDebuffIndex,
-                            10f,
+                            AfterburnDuration,
                             1f
                         );
                     }
