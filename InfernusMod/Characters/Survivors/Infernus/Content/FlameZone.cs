@@ -88,7 +88,7 @@ namespace InfernusMod.Characters.Survivors.Infernus.Content
                     attacker = owner,
                     inflictor = gameObject,
                     damage = damagePerSecond,
-                    damageColorIndex = DamageColorIndex.Void,
+                    damageColorIndex = DamageColorIndex.Default,
                     damageType = DamageType.Generic,
                     crit = ownerBody && ownerBody.RollCrit(),
                     position = hurtBox.transform.position,

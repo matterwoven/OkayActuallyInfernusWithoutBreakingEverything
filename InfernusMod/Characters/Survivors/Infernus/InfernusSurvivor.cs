@@ -438,7 +438,22 @@ namespace InfernusMod.Survivors.Infernus
         private void AddHooks()
         {
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
+            On.RoR2.HealthComponent.TakeDamage += Ror2HealthComponent_TakeDamage;
         }
+
+        private void Ror2HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            CharacterBody body = self.body;
+
+            if (body && body.HasBuff(InfernusDebuffs.napalmDebuff))
+            {
+                // Increase incoming damage by 30%
+                damageInfo.damage *= 1f + 20.0f;
+            }
+
+            orig(self, damageInfo);
+        }
+
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args)
         {
 
@@ -446,6 +461,7 @@ namespace InfernusMod.Survivors.Infernus
             {
                 args.moveSpeedMultAdd += 0.20f;
             }
+
         }
     }
 }
