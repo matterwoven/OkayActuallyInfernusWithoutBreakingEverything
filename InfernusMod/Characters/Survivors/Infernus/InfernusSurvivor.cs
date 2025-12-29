@@ -8,6 +8,8 @@ using RoR2.Skills;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using RoR2.UI;
+using UnityEngine.UI;
 
 namespace InfernusMod.Survivors.Infernus
 {
@@ -439,6 +441,8 @@ namespace InfernusMod.Survivors.Infernus
         {
             R2API.RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             On.RoR2.HealthComponent.TakeDamage += Ror2HealthComponent_TakeDamage;
+
+            //Add coloring hook
         }
 
         private void Ror2HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
@@ -453,7 +457,7 @@ namespace InfernusMod.Survivors.Infernus
 
             orig(self, damageInfo);
         }
-
+        
         private void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, R2API.RecalculateStatsAPI.StatHookEventArgs args)
         {
 
