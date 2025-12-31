@@ -7,7 +7,7 @@ Adds a new survivor: Infernus.
 |Passive| Afterburn | Incendiary Remarks applies stacks of buildup on hit, afterburn deals 200% damage per second. Intensifies every ten stacks. |
 |Primary| Incenidary Remarks | Shoot flaming bullets dealing 60% damage. |
 |Secondary| Napalm | Eject napalm to coat enemies dealing 250% damage. The Napalm status effect increases damage taken by 30%. |
-|Utility| Flame Dash | Dash swiftly leaving behind a trail of flames, enemies standing on it take 200% damage over time. |
+|Utility| Flame Dash | Dash swiftly leaving behind a trail of flames, enemies standing on it take 200% damage per second. |
 |Special| Concussive Combustion | Turn into a living bomb, dealing 800% damage to nearby enemies. |
 
 > [!NOTE]
