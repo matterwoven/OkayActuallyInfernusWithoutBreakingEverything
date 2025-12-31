@@ -9,8 +9,6 @@ Adds a new survivor: Infernus.
 |Secondary| Napalm | Eject napalm to coat enemies dealing 250% damage. The Napalm status effect increases damage taken by 30%. |
 |Utility| Flame Dash | Dash swiftly leaving behind a trail of flames, enemies standing on it take 200% damage over time. |
 |Special| Concussive Combustion | Turn into a living bomb, dealing 800% damage to nearby enemies. |
-[^1]: Not to be confused with Davy Jones of The Monkees
-[^2]: Also humans
 
 > [!NOTE]
 > Disclaimer: The base was sourced from the Henry Tutorial, and made possible through the modding discords support.  
