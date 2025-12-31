@@ -1,5 +1,5 @@
 # Introduction
-Adds a new survivor: Infernus.
+Adds a new survivor: Infernus from the Cursed Apple.
 
 If people are interested in this project I'll see about importing other characters from Deadlock into RoR2 as well.
 
