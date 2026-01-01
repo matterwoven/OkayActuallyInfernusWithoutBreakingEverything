@@ -9,13 +9,6 @@ namespace InfernusMod.Survivors.Infernus.SkillStates
 {
     public class FlameDash : BaseSkillState
     {
-        //Alpha changes - Cosmetic
-        private Material dashPlaneMaterial;
-        private float fadeTimer = 0f;
-        private float peakAlpha = 0.8f; // how fast it flickers
-        private float baseAlpha = 0.1f; // starting alpha
-        private float flickerAmplitude = 0.2f; // max alpha change
-        private Vector3 baseScale;
 
         //Speed and duration changes
         public static float duration = 3f;
